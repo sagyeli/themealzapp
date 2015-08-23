@@ -27,6 +27,12 @@ public class MainActivity extends AppCompatActivity
      */
     private CharSequence mTitle;
 
+    private Fragment homeFragment = new HomeFragment();
+    private Fragment restaurantsListFragment = new RestaurantsListFragment();
+    private Fragment helpFragment = new HelpFragment();
+    private Fragment infoFragment = new InfoFragment();
+    private Fragment contactFragment = new ContactFragment();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,23 +55,23 @@ public class MainActivity extends AppCompatActivity
         switch (position + 1) {
             case 1:
                 mTitle = getString(R.string.title_home);
-                fragment = new HomeFragment();
+                fragment = homeFragment;
                 break;
             case 2:
                 mTitle = getString(R.string.title_restaurants_list);
-                fragment = new RestaurantsListFragment();
+                fragment = restaurantsListFragment;
                 break;
             case 3:
                 mTitle = getString(R.string.title_help);
-                fragment = new HelpFragment();
+                fragment = helpFragment;
                 break;
             case 4:
                 mTitle = getString(R.string.title_info);
-                fragment = new InfoFragment();
+                fragment = infoFragment;
                 break;
             case 5:
                 mTitle = getString(R.string.title_contact);
-                fragment = new ContactFragment();
+                fragment = contactFragment;
                 break;
         }
 

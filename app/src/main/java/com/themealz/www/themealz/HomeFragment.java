@@ -1,12 +1,20 @@
 package com.themealz.www.themealz;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.saulpower.piechart.adapter.PieChartAdapter;
+import com.saulpower.piechart.extra.Dynamics;
+import com.saulpower.piechart.extra.FrictionDynamics;
+import com.saulpower.piechart.views.PieChartView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -26,6 +34,8 @@ public class HomeFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private PieChartView mChart;
 
     private OnFragmentInteractionListener mListener;
 
@@ -63,8 +73,28 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+
+        List<Float> slices = new ArrayList<Float>();
+
+        slices.add(0.25f);
+        slices.add(0.05f);
+        slices.add(0.1f);
+        slices.add(0.05f);
+        slices.add(0.2f);
+        slices.add(0.3f);
+        slices.add(0.05f);
+
+        PieChartAdapter adapter = new PieChartAdapter(container.getContext(), slices);
+
+        mChart = (PieChartView) rootView.findViewById(R.id.chart);
+        mChart.setDynamics(new FrictionDynamics(0.95f));
+        mChart.setSnapToAnchor(PieChartView.PieChartAnchor.BOTTOM);
+        mChart.setAdapter(adapter);
+        mChart.onResume();
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        return rootView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -106,4 +136,35 @@ public class HomeFragment extends Fragment {
         public void onFragmentInteraction(Uri uri);
     }
 
+
+    /**
+     * A very simple dynamics implementation with spring-like behavior
+     */
+    class SimpleDynamics extends Dynamics {
+
+        /** The friction factor */
+        private float mFrictionFactor;
+
+        /**
+         * Creates a SimpleDynamics object
+         *
+         * @param frictionFactor The friction factor. Should be between 0 and 1.
+         *            A higher number means a slower dissipating speed.
+         * @param snapToFactor The snap to factor. Should be between 0 and 1. A
+         *            higher number means a stronger snap.
+         */
+        public SimpleDynamics(final float frictionFactor) {
+            mFrictionFactor = frictionFactor;
+        }
+
+        @Override
+        protected void onUpdate(final int dt) {
+
+            // then update the position based on the current velocity
+            mPosition += mVelocity * dt / 1000;
+
+            // and finally, apply some friction to slow it down
+            mVelocity *= mFrictionFactor;
+        }
+    }
 }
