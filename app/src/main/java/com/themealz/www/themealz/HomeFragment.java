@@ -35,7 +35,7 @@ public class HomeFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private PieChartView mChart;
+    public PieChartView mChart;
 
     private OnFragmentInteractionListener mListener;
 
@@ -91,7 +91,6 @@ public class HomeFragment extends Fragment {
         mChart.setDynamics(new FrictionDynamics(0.95f));
         mChart.setSnapToAnchor(PieChartView.PieChartAnchor.BOTTOM);
         mChart.setAdapter(adapter);
-        mChart.onResume();
 
         // Inflate the layout for this fragment
         return rootView;
@@ -119,6 +118,18 @@ public class HomeFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mChart.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mChart.onPause();
     }
 
     /**
