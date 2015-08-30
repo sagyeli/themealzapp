@@ -191,7 +191,7 @@ public class PieSliceDrawable extends Drawable {
 //		canvas.drawPath(mPathLeft, mStrokePaint);
 
 		Bitmap bitmap = RotateBitmap(BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_launcher), 360 - parentChartRotationDegree);
-		canvas.drawBitmap(bitmap, 586 + Math.round(500 * Math.cos(Math.toRadians(getSliceCenter()))), 586 + Math.round(500 * Math.sin(Math.toRadians(getSliceCenter()))), mPaint);
+		canvas.drawBitmap(bitmap, 556 + Math.round(500 * Math.cos(Math.toRadians(getSliceCenter()))), 556 + Math.round(500 * Math.sin(Math.toRadians(getSliceCenter()))), mPaint);
 	}
 
 	@Override
