@@ -485,6 +485,7 @@ public class PieChartView extends SurfaceView implements SurfaceHolder.Callback 
 		mPixelDensity = UiUtils.getDisplayMetrics(context).density;
 		mStrokeWidth = UiUtils.getDynamicPixels(context, SUB_STROKE_WIDTH);
 		
+
 		mDrawables = new ArrayList<PieSliceDrawable>();
 		mRecycledDrawables = new LinkedList<PieSliceDrawable>();
 		
@@ -494,7 +495,7 @@ public class PieChartView extends SurfaceView implements SurfaceHolder.Callback 
 	private void initPaints() {
 
 		mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-		mPaint.setColor(Color.WHITE);
+		mPaint.setColor(Color.TRANSPARENT);
 		
 		mStrokePaint = new Paint(mPaint);
 		mStrokePaint.setStyle(Paint.Style.STROKE);
@@ -974,7 +975,7 @@ public class PieChartView extends SurfaceView implements SurfaceHolder.Callback 
 		if (mCaret == null) {
 			PointF position = new PointF(mCenter.x - mInfoRadius / 2, mCenter.y + mInfoRadius / 3);
 	        mCaret = new CaretDrawable(getContext(), position, mInfoRadius, mInfoRadius);
-	        mCaret.setColor(Color.WHITE);
+	        mCaret.setColor(Color.TRANSPARENT);
 		}
 	}
 	

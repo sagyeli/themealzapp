@@ -1,18 +1,18 @@
 package com.themealz.www.themealz;
 
 import android.app.Activity;
-import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.v4.widget.DrawerLayout;
 
 public class MainActivity extends AppCompatActivity
         implements ContactFragment.OnFragmentInteractionListener, HelpFragment.OnFragmentInteractionListener, HomeFragment.OnFragmentInteractionListener, InfoFragment.OnFragmentInteractionListener, RestaurantsListFragment.OnFragmentInteractionListener, NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getWindow().getDecorView().setBackgroundResource(R.drawable.mainbackground);
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);

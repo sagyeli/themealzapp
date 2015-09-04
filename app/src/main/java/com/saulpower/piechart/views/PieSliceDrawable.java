@@ -130,7 +130,7 @@ public class PieSliceDrawable extends Drawable {
 		mStrokePaint = new Paint(mPaint);
 		mStrokePaint.setStyle(Paint.Style.STROKE);
 		mStrokePaint.setStrokeWidth(mStrokeWidth);
-		mStrokePaint.setColor(Color.WHITE);
+		mStrokePaint.setColor(Color.TRANSPARENT);
 	}
 
 	public static Bitmap RotateBitmap(Bitmap source, float angle)
