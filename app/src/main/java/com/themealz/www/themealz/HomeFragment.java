@@ -107,6 +107,9 @@ public class HomeFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+        if (mChart != null) {
+            mChart.onFinishTemporaryDetach();
+        }
         try {
             mListener = (OnFragmentInteractionListener) activity;
         } catch (ClassCastException e) {
@@ -118,6 +121,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+        mChart.onStartTemporaryDetach();
         mListener = null;
     }
 
@@ -147,7 +151,6 @@ public class HomeFragment extends Fragment {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
     }
-
 
     /**
      * A very simple dynamics implementation with spring-like behavior

@@ -3,6 +3,7 @@ package com.themealz.www.themealz;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -33,6 +34,8 @@ public class MainActivity extends AppCompatActivity
     private Fragment infoFragment = new InfoFragment();
     private Fragment contactFragment = new ContactFragment();
 
+    private Fragment fragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +54,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-        Fragment fragment = null;
+        fragment = null;
 
         switch (position + 1) {
             case 1:
@@ -78,9 +81,8 @@ public class MainActivity extends AppCompatActivity
 
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, fragment != null ? fragment : PlaceholderFragment.newInstance(position + 1))
-                .commit();
+        FragmentTransaction fragTransaction = fragmentManager.beginTransaction();
+        fragTransaction.replace(R.id.container, fragment != null ? fragment : PlaceholderFragment.newInstance(position + 1)).commit();
     }
 
     public void onSectionAttached(int number) {

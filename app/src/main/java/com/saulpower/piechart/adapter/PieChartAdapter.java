@@ -52,6 +52,7 @@ public class PieChartAdapter extends BasePieChartAdapter {
 		
 //		sliceView.setSliceColor(UiUtils.getRandomColor(mContext, position));
 		sliceView.setPercent(mObjects.get(position));
+		sliceView.setPosition(position);
 		sliceView.setDegreeOffset(offset);
 		
 		return sliceView;

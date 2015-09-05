@@ -476,9 +476,9 @@ public class PieChartView extends SurfaceView implements SurfaceHolder.Callback 
 		mHandler = new Handler();
 		
         getHolder().addCallback(this);
-		setZOrderOnTop(false);
+		setZOrderOnTop(true);
         getHolder().setFormat(PixelFormat.TRANSPARENT);
-        
+
         mDrawThread = new DrawThread(getHolder(), mHandler);
 		
 		mScrollThreshold = ViewConfiguration.get(context).getScaledTouchSlop();

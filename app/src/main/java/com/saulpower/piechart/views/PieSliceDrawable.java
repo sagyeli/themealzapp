@@ -42,7 +42,8 @@ public class PieSliceDrawable extends Drawable {
 	private float mStrokeWidth;
 	
 	private Path mPathRight, mPathLeft;
-	
+	private int position;
+
 	public float getDegreeOffset() {
 		return mDegreeOffset;
 	}
@@ -190,8 +191,27 @@ public class PieSliceDrawable extends Drawable {
 //		canvas.drawPath(mPathRight, mStrokePaint);
 //		canvas.drawPath(mPathLeft, mStrokePaint);
 
-		Bitmap bitmap = RotateBitmap(BitmapFactory.decodeResource(mContext.getResources(), R.drawable.ic_launcher), 360 - parentChartRotationDegree);
-		canvas.drawBitmap(bitmap, 556 + Math.round(500 * Math.cos(Math.toRadians(getSliceCenter()))), 556 + Math.round(500 * Math.sin(Math.toRadians(getSliceCenter()))), mPaint);
+		int imageId;
+
+		switch (position % 4) {
+		case 0:
+			imageId = R.drawable.chicken;
+			break;
+		case 1:
+			imageId = R.drawable.meat;
+			break;
+		case 2:
+			imageId = R.drawable.steak;
+			break;
+		case 3:
+			imageId = R.drawable.turkey;
+			break;
+		default:
+			imageId = R.drawable.chicken;
+		}
+
+		Bitmap bitmap = RotateBitmap(BitmapFactory.decodeResource(mContext.getResources(), imageId), 360 - parentChartRotationDegree);
+		canvas.drawBitmap(bitmap, 526 + Math.round(500 * Math.cos(Math.toRadians(getSliceCenter()))), 526 + Math.round(500 * Math.sin(Math.toRadians(getSliceCenter()))), mPaint);
 	}
 
 	@Override
@@ -210,5 +230,9 @@ public class PieSliceDrawable extends Drawable {
 
 	public void setParentChartRotationDegree(float parentChartRotationDegree) {
 		this.parentChartRotationDegree = parentChartRotationDegree;
+	}
+
+	public void setPosition(int position) {
+		this.position = position;
 	}
 }
