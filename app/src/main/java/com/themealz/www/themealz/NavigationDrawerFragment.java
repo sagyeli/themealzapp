@@ -1,10 +1,8 @@
 package com.themealz.www.themealz;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -19,7 +17,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
@@ -178,26 +175,26 @@ public class NavigationDrawerFragment extends Fragment {
                 getActivity().supportInvalidateOptionsMenu(); // calls onPrepareOptionsMenu()
             }
 
-            @SuppressLint("NewApi")
-            public void onDrawerSlide(View drawerView, float slideOffset)
-            {
-                float moveFactor = (mDrawerListView.getWidth() * slideOffset);
-                float lastTranslate = 0.0f;
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-                {
-                    container.setTranslationX(moveFactor);
-                }
-                else
-                {
-                    TranslateAnimation anim = new TranslateAnimation(lastTranslate, moveFactor, 0.0f, 0.0f);
-                    anim.setDuration(0);
-                    anim.setFillAfter(true);
-                    container.startAnimation(anim);
-
-                    lastTranslate = moveFactor;
-                }
-            }
+//            @SuppressLint("NewApi")
+//            public void onDrawerSlide(View drawerView, float slideOffset)
+//            {
+//                float moveFactor = (mDrawerListView.getWidth() * slideOffset);
+//                float lastTranslate = 0.0f;
+//
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+//                {
+//                    container.setTranslationX(moveFactor);
+//                }
+//                else
+//                {
+//                    TranslateAnimation anim = new TranslateAnimation(lastTranslate, moveFactor, 0.0f, 0.0f);
+//                    anim.setDuration(0);
+//                    anim.setFillAfter(true);
+//                    container.startAnimation(anim);
+//
+//                    lastTranslate = moveFactor;
+//                }
+//            }
         };
 
         // If the user hasn't 'learned' about the drawer, open it to introduce them to the drawer,
