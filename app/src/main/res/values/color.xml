@@ -48,7 +48,7 @@
     <color name="random16">#3b6771</color>
     
     <color name="secondaryColor">#47C3D3</color>
-    <color name="secondaryHeaderColor">#BF1B2B</color>
+    <color name="secondaryHeaderColor">#D87904</color>
     <color name="shadow_gray">#B2B2B2</color>
     <color name="splitsColor">#F16430</color>
     <color name="white">#FFF</color>
@@ -63,4 +63,6 @@
     <color name="counter_text_bg">#000000</color>
 
     <color name="splash_screen_color">#3e0400</color>
+
+    <color name="actionbar_background">#400400</color>
 </resources>

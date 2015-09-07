@@ -17,7 +17,7 @@
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_contact_fragment">צור מינגלינג</string>
     <string name="hello_help_fragment">עזרה ראשונה</string>
-    <string name="hello_home_fragment">אין כמו בבית</string>
+    <string name="hello_home_fragment">מה בא לך לאכול?</string>
     <string name="hello_info_fragment">מידע חשוב מאוד!</string>
     <string name="hello_restaurants_list_fragment">רשימה של מלא מסעדות יוקרה</string>
     <string name="title_activity_splash">SplashActivity</string>

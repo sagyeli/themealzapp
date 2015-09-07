@@ -40,11 +40,12 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getWindow().getDecorView().setBackgroundResource(R.drawable.mainbackground);
+        getWindow().getDecorView().setBackgroundResource(R.drawable.main_background);
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
-        mTitle = getTitle();
+//        mTitle = getTitle();
+        mTitle = "";
 
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(
@@ -58,23 +59,23 @@ public class MainActivity extends AppCompatActivity
 
         switch (position + 1) {
             case 1:
-                mTitle = getString(R.string.title_home);
+//                mTitle = getString(R.string.title_home);
                 fragment = homeFragment;
                 break;
             case 2:
-                mTitle = getString(R.string.title_restaurants_list);
+//                mTitle = getString(R.string.title_restaurants_list);
                 fragment = restaurantsListFragment;
                 break;
             case 3:
-                mTitle = getString(R.string.title_help);
+//                mTitle = getString(R.string.title_help);
                 fragment = helpFragment;
                 break;
             case 4:
-                mTitle = getString(R.string.title_info);
+//                mTitle = getString(R.string.title_info);
                 fragment = infoFragment;
                 break;
             case 5:
-                mTitle = getString(R.string.title_contact);
+//                mTitle = getString(R.string.title_contact);
                 fragment = contactFragment;
                 break;
         }

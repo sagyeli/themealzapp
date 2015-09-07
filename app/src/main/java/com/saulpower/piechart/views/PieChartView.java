@@ -5,6 +5,7 @@ import android.database.DataSetObserver;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.PointF;
@@ -29,6 +30,7 @@ import com.saulpower.piechart.adapter.BasePieChartAdapter;
 import com.saulpower.piechart.extra.Dynamics;
 import com.saulpower.piechart.extra.UiUtils;
 import com.saulpower.piechart.views.ThreadAnimator.AnimationListener;
+import com.themealz.www.themealz.R;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -200,6 +202,8 @@ public class PieChartView extends SurfaceView implements SurfaceHolder.Callback 
 	private Paint mPaint;
 	
 	private Paint mStrokePaint;
+
+	private Context mContext;
 	
 	private void setTouchState(int touchState) {
 		
@@ -439,18 +443,24 @@ public class PieChartView extends SurfaceView implements SurfaceHolder.Callback 
 	
 	public PieChartView(Context context) {
 		super(context);
-		
+
+		mContext = context;
+
 		init();
 	}
 	
 	public PieChartView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+
+		mContext = context;
 		
 		init();
 	}
 	
 	public PieChartView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
+
+		mContext = context;
 		
 		init();
 	}
@@ -464,6 +474,8 @@ public class PieChartView extends SurfaceView implements SurfaceHolder.Callback 
 	 */
 	public PieChartView(Context context, OnPieChartReadyListener listener) {
 		super(context);
+
+		mContext = context;
 		
 		setOnPieChartReadyListener(listener);
 		init();
@@ -1553,7 +1565,7 @@ public class PieChartView extends SurfaceView implements SurfaceHolder.Callback 
 			if (mDrawingCache == null) {
 				mDrawingCache = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
 			}
-			
+
 			Canvas cache = new Canvas(mDrawingCache);
 	    	doDraw(cache, mRotationDegree, mChartScale, mShowInfo);
 		}
@@ -1597,7 +1609,7 @@ public class PieChartView extends SurfaceView implements SurfaceHolder.Callback 
 		private void doDraw(Canvas canvas, float rotationDegree, float scale, boolean showInfo) {
 			
 			if (canvas == null || mAdapter == null) return;
-			
+
 			if (scale != 0) {
 				
 				// Scale and rotate the canvas
@@ -1608,7 +1620,11 @@ public class PieChartView extends SurfaceView implements SurfaceHolder.Callback 
 
 		    	// Draw a background circle
 				canvas.drawCircle(mCenter.x, mCenter.y, getChartRadius() + mStrokeWidth, mPaint);
-		    	
+
+				Drawable background = getResources().getDrawable(R.drawable.main_background);
+				background.setBounds(-getWidth(), -getHeight(), 2 * getWidth(), 2 * getHeight());
+				background.draw(canvas);
+
 				// Draw all of the pie slices
 				synchronized (mDrawables) {
 			        for (PieSliceDrawable slice : mDrawables) {
@@ -1619,9 +1635,9 @@ public class PieChartView extends SurfaceView implements SurfaceHolder.Callback 
 		        
 		        canvas.restore();
 			}
-	        
+
 			// Draw the info panel if it has been set to show
-	        if (showInfo) {
+			if (showInfo) {
 	        	
 				createCaret();
 	

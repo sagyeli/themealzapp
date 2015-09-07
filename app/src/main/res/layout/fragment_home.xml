@@ -3,8 +3,14 @@
     android:layout_height="match_parent" tools:context="com.themealz.www.themealz.HomeFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="@string/hello_home_fragment" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hello_home_fragment"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/secondaryHeaderColor"
+        android:textSize="27dp"
+        android:paddingTop="50dp"/>
 
     <com.saulpower.piechart.views.PieChartView
         android:id="@+id/chart"
@@ -12,6 +18,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_centerInParent="true"
-        android:layout_margin="10dp" />
+        android:layout_margin="10dp"/>
 
 </FrameLayout>
