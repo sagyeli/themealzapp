@@ -10,7 +10,7 @@
         android:layout_gravity="center_horizontal"
         android:textColor="@color/secondaryHeaderColor"
         android:textSize="27dp"
-        android:paddingTop="50dp"/>
+        android:paddingTop="40dp"/>
 
     <com.saulpower.piechart.views.PieChartView
         android:id="@+id/chart"
