@@ -1340,7 +1340,7 @@ public class PieChartView extends SurfaceView implements SurfaceHolder.Callback 
 			} catch (InterruptedException e) {}
 		}
 	}
-	
+
 	/**
 	 * Thread used to draw the Pie Chart
 	 * 
@@ -1675,7 +1675,7 @@ public class PieChartView extends SurfaceView implements SurfaceHolder.Callback 
 	public interface OnItemLongClickListener {
 		public void onItemLongClick(View parent, Drawable drawable, int position, long id);
 	}
-	
+
 	public interface OnRotationStateChangeListener {
 		public void onRotationStateChange(int state);
 	}

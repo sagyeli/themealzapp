@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.saulpower.piechart.adapter.PieChartAdapter;
 import com.saulpower.piechart.extra.Dynamics;
@@ -36,6 +37,7 @@ public class HomeFragment extends Fragment {
     private String mParam2;
 
     public PieChartView mChart;
+    public Button mMainButton;
 
     private OnFragmentInteractionListener mListener;
 
@@ -92,6 +94,33 @@ public class HomeFragment extends Fragment {
         mChart.setDynamics(new FrictionDynamics(0.95f));
         mChart.setSnapToAnchor(PieChartView.PieChartAnchor.BOTTOM);
         mChart.setAdapter(adapter);
+        mChart.setOnPieChartChangeListener(new PieChartView.OnPieChartChangeListener() {
+            @Override
+            public void onSelectionChanged(int index) {
+                int imageId;
+
+                switch (index % 4) {
+                    case 0:
+                        imageId = R.drawable.chicken;
+                        break;
+                    case 1:
+                        imageId = R.drawable.meat;
+                        break;
+                    case 2:
+                        imageId = R.drawable.steak;
+                        break;
+                    case 3:
+                        imageId = R.drawable.turkey;
+                        break;
+                    default:
+                        imageId = R.drawable.chicken;
+                }
+
+                mMainButton.setBackgroundResource(imageId);
+            }
+        });
+
+        mMainButton = (Button) rootView.findViewById(R.id.mainbutton);
 
         // Inflate the layout for this fragment
         return rootView;
