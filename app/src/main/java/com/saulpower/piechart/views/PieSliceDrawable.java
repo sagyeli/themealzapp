@@ -127,6 +127,8 @@ public class PieSliceDrawable extends Drawable {
 	private void init() {
 
 		mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		mPaint.setColor(Color.WHITE);
+		mPaint.setTextSize(72);
 
 		mStrokePaint = new Paint(mPaint);
 		mStrokePaint.setStyle(Paint.Style.STROKE);
@@ -211,8 +213,15 @@ public class PieSliceDrawable extends Drawable {
 		}
 
 		Bitmap bitmap = RotateBitmap(BitmapFactory.decodeResource(mContext.getResources(), imageId), 360 - parentChartRotationDegree);
-		float translatedCenterX = mBounds.centerX() - bitmap.getWidth() / 2, translatedCenterY = mBounds.centerY() - bitmap.getHeight() / 2;
-		canvas.drawBitmap(bitmap, translatedCenterX + Math.round((translatedCenterX - 20) * Math.cos(Math.toRadians(getSliceCenter()))), translatedCenterY + Math.round((translatedCenterY - 20) * Math.sin(Math.toRadians(getSliceCenter()))), mPaint);
+		float translatedCenterX = mBounds.centerX() - bitmap.getWidth() / 2, translatedCenterY = mBounds.centerY() - bitmap.getHeight() / 2,
+				translatedX = translatedCenterX + Math.round((translatedCenterX - 20) * Math.cos(Math.toRadians(getSliceCenter()))), translatedY = translatedCenterY + Math.round((translatedCenterY - 20) * Math.sin(Math.toRadians(getSliceCenter())));
+		canvas.drawBitmap(bitmap, translatedX, translatedY, mPaint);
+//		canvas.drawText("My Text", translatedX, translatedY, mPaint);
+
+		canvas.save();
+		canvas.rotate(360 - parentChartRotationDegree, translatedX, translatedY);
+		canvas.drawText("My Text", translatedX, translatedY, mPaint);
+		canvas.restore();
 	}
 
 	@Override
