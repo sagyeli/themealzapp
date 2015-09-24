@@ -9,6 +9,7 @@ import android.graphics.ColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 
@@ -127,7 +128,7 @@ public class PieSliceDrawable extends Drawable {
 	private void init() {
 
 		mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-		mPaint.setColor(Color.WHITE);
+		mPaint.setColor(mContext.getResources().getColor(R.color.secondaryHeaderColor));
 		mPaint.setTextSize(72);
 
 		mStrokePaint = new Paint(mPaint);
@@ -194,33 +195,43 @@ public class PieSliceDrawable extends Drawable {
 //		canvas.drawPath(mPathLeft, mStrokePaint);
 
 		int imageId;
+		String gText;
 
 		switch (position % 4) {
 		case 0:
 			imageId = R.drawable.chicken;
+			gText = "עוף";
 			break;
 		case 1:
 			imageId = R.drawable.meat;
+			gText = "בשר";
 			break;
 		case 2:
 			imageId = R.drawable.steak;
+			gText = "סטייק";
 			break;
 		case 3:
 			imageId = R.drawable.turkey;
+			gText = "הודו";
 			break;
 		default:
 			imageId = R.drawable.chicken;
+			gText = "עוף";
 		}
 
 		Bitmap bitmap = RotateBitmap(BitmapFactory.decodeResource(mContext.getResources(), imageId), 360 - parentChartRotationDegree);
-		float translatedCenterX = mBounds.centerX() - bitmap.getWidth() / 2, translatedCenterY = mBounds.centerY() - bitmap.getHeight() / 2,
-				translatedX = translatedCenterX + Math.round((translatedCenterX - 20) * Math.cos(Math.toRadians(getSliceCenter()))), translatedY = translatedCenterY + Math.round((translatedCenterY - 20) * Math.sin(Math.toRadians(getSliceCenter())));
-		canvas.drawBitmap(bitmap, translatedX, translatedY, mPaint);
-//		canvas.drawText("My Text", translatedX, translatedY, mPaint);
+		Rect bounds = new Rect();
+		mPaint.getTextBounds(gText, 0, gText.length(), bounds);
+
+		float proximityFactor = 0.7f,
+				translatedX = (float) (mBounds.centerX() + proximityFactor * mBounds.centerX() * Math.cos(Math.toRadians(getSliceCenter()))),
+				translatedY = (float) (mBounds.centerY() + proximityFactor * mBounds.centerY() * Math.sin(Math.toRadians(getSliceCenter())));
+
+		canvas.drawBitmap(bitmap, translatedX - bitmap.getWidth() / 2, translatedY - bitmap.getHeight() / 2, mPaint);
 
 		canvas.save();
 		canvas.rotate(360 - parentChartRotationDegree, translatedX, translatedY);
-		canvas.drawText("My Text", translatedX, translatedY, mPaint);
+		canvas.drawText(gText, translatedX - bounds.width() / 2, translatedY + bounds.height() + mBounds.height() / 10, mPaint);
 		canvas.restore();
 	}
 
