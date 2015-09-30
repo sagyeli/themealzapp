@@ -13,9 +13,10 @@ public class PieChartAdapter extends BasePieChartAdapter {
 
 	private Context mContext;
 	private List<Float> mObjects;
+	private List<String> mTitles;
 	
-	public PieChartAdapter(Context context, List<Float> objects) {
-		init(context, objects);
+	public PieChartAdapter(Context context, List<Float> objects, List<String> titles) {
+		init(context, objects, titles);
 	}
 	
 	@Override
@@ -28,10 +29,11 @@ public class PieChartAdapter extends BasePieChartAdapter {
 		return mObjects.get(position);
 	}
 	
-	private void init(Context context, List<Float> objects) {
+	private void init(Context context, List<Float> objects, List<String> titles) {
 		
 		mContext = context;
 		mObjects = objects;
+		mTitles = titles;
 	}
 
 	@Override
@@ -52,6 +54,7 @@ public class PieChartAdapter extends BasePieChartAdapter {
 		
 //		sliceView.setSliceColor(UiUtils.getRandomColor(mContext, position));
 		sliceView.setPercent(mObjects.get(position));
+		sliceView.setTitle(mTitles.get(position));
 		sliceView.setPosition(position);
 		sliceView.setDegreeOffset(offset);
 		

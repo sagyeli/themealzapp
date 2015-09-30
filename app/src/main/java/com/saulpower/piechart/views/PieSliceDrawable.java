@@ -34,6 +34,7 @@ public class PieSliceDrawable extends Drawable {
 
 	private float mDegreeOffset;
 	private float mPercent;
+	private String mTitle = "";
 	private RectF mBounds = new RectF();
 
 	private Paint mPaint, mStrokePaint;
@@ -64,6 +65,10 @@ public class PieSliceDrawable extends Drawable {
 	public void setPercent(float percent) {
 		mPercent = percent;
 		invalidateSelf();
+	}
+
+	public void setTitle(String title) {
+		mTitle = title;
 	}
 	
 	public float getSliceCenter() {
@@ -195,33 +200,26 @@ public class PieSliceDrawable extends Drawable {
 //		canvas.drawPath(mPathLeft, mStrokePaint);
 
 		int imageId;
-		String gText;
-
 		switch (position % 4) {
 		case 0:
 			imageId = R.drawable.chicken;
-			gText = "עוף";
 			break;
 		case 1:
 			imageId = R.drawable.meat;
-			gText = "בשר";
 			break;
 		case 2:
 			imageId = R.drawable.steak;
-			gText = "סטייק";
 			break;
 		case 3:
 			imageId = R.drawable.turkey;
-			gText = "הודו";
 			break;
 		default:
 			imageId = R.drawable.chicken;
-			gText = "עוף";
 		}
 
 		Bitmap bitmap = RotateBitmap(BitmapFactory.decodeResource(mContext.getResources(), imageId), 360 - parentChartRotationDegree);
 		Rect bounds = new Rect();
-		mPaint.getTextBounds(gText, 0, gText.length(), bounds);
+		mPaint.getTextBounds(mTitle, 0, mTitle.length(), bounds);
 
 		float proximityFactor = 0.7f,
 				translatedX = (float) (mBounds.centerX() + proximityFactor * mBounds.centerX() * Math.cos(Math.toRadians(getSliceCenter()))),
@@ -231,7 +229,7 @@ public class PieSliceDrawable extends Drawable {
 
 		canvas.save();
 		canvas.rotate(360 - parentChartRotationDegree, translatedX, translatedY);
-		canvas.drawText(gText, translatedX - bounds.width() / 2, translatedY + bounds.height() + mBounds.height() / 10, mPaint);
+		canvas.drawText(mTitle, translatedX - bounds.width() / 2, translatedY + bounds.height() + mBounds.height() / 10, mPaint);
 		canvas.restore();
 	}
 

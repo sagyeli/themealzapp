@@ -3,6 +3,7 @@ package com.themealz.www.themealz;
 import android.app.Activity;
 import android.app.Fragment;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,16 @@ import com.saulpower.piechart.extra.Dynamics;
 import com.saulpower.piechart.extra.FrictionDynamics;
 import com.saulpower.piechart.views.PieChartView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +47,8 @@ public class HomeFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    public View rootView;
+    public ViewGroup mContainer;
     public PieChartView mChart;
     public Button mMainButton;
 
@@ -75,52 +88,11 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_home, container, false);
-
-        List<Float> slices = new ArrayList<Float>();
-
-        slices.add(0.125f);
-        slices.add(0.125f);
-        slices.add(0.125f);
-        slices.add(0.125f);
-        slices.add(0.125f);
-        slices.add(0.125f);
-        slices.add(0.125f);
-        slices.add(0.125f);
-
-        PieChartAdapter adapter = new PieChartAdapter(container.getContext(), slices);
-
+        rootView = inflater.inflate(R.layout.fragment_home, container, false);
+        mContainer = container;
         mChart = (PieChartView) rootView.findViewById(R.id.chart);
-        mChart.setDynamics(new FrictionDynamics(0.95f));
-        mChart.setSnapToAnchor(PieChartView.PieChartAnchor.BOTTOM);
-        mChart.setAdapter(adapter);
-        mChart.setOnPieChartChangeListener(new PieChartView.OnPieChartChangeListener() {
-            @Override
-            public void onSelectionChanged(int index) {
-                int imageId;
 
-                switch (index % 4) {
-                    case 0:
-                        imageId = R.drawable.chicken;
-                        break;
-                    case 1:
-                        imageId = R.drawable.meat;
-                        break;
-                    case 2:
-                        imageId = R.drawable.steak;
-                        break;
-                    case 3:
-                        imageId = R.drawable.turkey;
-                        break;
-                    default:
-                        imageId = R.drawable.chicken;
-                }
-
-                mMainButton.setBackgroundResource(imageId);
-            }
-        });
-
-        mMainButton = (Button) rootView.findViewById(R.id.mainbutton);
+        new DataRequestor().execute("");
 
         // Inflate the layout for this fragment
         return rootView;
@@ -210,5 +182,95 @@ public class HomeFragment extends Fragment {
             // and finally, apply some friction to slow it down
             mVelocity *= mFrictionFactor;
         }
+    }
+
+    private class DataRequestor extends AsyncTask<String, Void, String> {
+        private JSONArray ja;
+
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                URL url = new URL("http://themealz.com/api/mealoptions");
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setRequestMethod("GET");
+                urlConnection.connect();
+                // gets the server json data
+                BufferedReader bufferedReader =
+                        new BufferedReader(new InputStreamReader(
+                                urlConnection.getInputStream()));
+                StringBuilder stringBuilder = new StringBuilder();
+                String line = null;
+                while ((line = bufferedReader.readLine()) != null)
+                {
+                    stringBuilder.append(line);
+                }
+
+                ja = new JSONArray(stringBuilder.toString());
+            } catch (MalformedURLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (JSONException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            return "Executed";
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            List<Float> slices = new ArrayList<Float>();
+            List<String> titles = new ArrayList<String>();
+
+            for (int i = 0 ; i < ja.length() ; i++) {
+                slices.add(1f / ja.length());
+                try {
+                    titles.add(ja.getJSONObject(i).getString("name"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            PieChartAdapter adapter = new PieChartAdapter(mContainer.getContext(), slices, titles);
+
+            mChart.setDynamics(new FrictionDynamics(0.95f));
+            mChart.setSnapToAnchor(PieChartView.PieChartAnchor.BOTTOM);
+            mChart.setAdapter(adapter);
+            mChart.setOnPieChartChangeListener(new PieChartView.OnPieChartChangeListener() {
+                @Override
+                public void onSelectionChanged(int index) {
+                    int imageId;
+
+                    switch (index % 4) {
+                        case 0:
+                            imageId = R.drawable.chicken;
+                            break;
+                        case 1:
+                            imageId = R.drawable.meat;
+                            break;
+                        case 2:
+                            imageId = R.drawable.steak;
+                            break;
+                        case 3:
+                            imageId = R.drawable.turkey;
+                            break;
+                        default:
+                            imageId = R.drawable.chicken;
+                    }
+
+                    mMainButton.setBackgroundResource(imageId);
+                }
+            });
+
+            mMainButton = (Button) rootView.findViewById(R.id.mainbutton);
+        }
+
+        @Override
+        protected void onPreExecute() {}
+
+        @Override
+        protected void onProgressUpdate(Void... values) {}
     }
 }
