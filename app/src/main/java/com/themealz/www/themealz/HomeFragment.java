@@ -91,6 +91,13 @@ public class HomeFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_home, container, false);
         mContainer = container;
         mChart = (PieChartView) rootView.findViewById(R.id.chart);
+        mMainButton = (Button) rootView.findViewById(R.id.mainbutton);
+
+        mMainButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                new DataRequestor().execute("5609e8fecd387d810129f207");
+            }
+        });
 
         new DataRequestor().execute("");
 
@@ -190,7 +197,7 @@ public class HomeFragment extends Fragment {
         @Override
         protected String doInBackground(String... params) {
             try {
-                URL url = new URL("http://themealz.com/api/mealoptions");
+                URL url = new URL("http://themealz.com/api/mealoptions" + (params.length > 0 && params[0] != "" ? "/children/" + params[0] : ""));
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
                 urlConnection.connect();
@@ -263,8 +270,6 @@ public class HomeFragment extends Fragment {
                     mMainButton.setBackgroundResource(imageId);
                 }
             });
-
-            mMainButton = (Button) rootView.findViewById(R.id.mainbutton);
         }
 
         @Override
