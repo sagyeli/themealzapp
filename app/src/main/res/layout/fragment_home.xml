@@ -12,19 +12,48 @@
         android:textSize="27dp"
         android:paddingTop="40dp"/>
 
+    <TableLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/TableLayout01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_centerInParent="true">
+        <TableRow android:id="@+id/TableRow01" android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <Button android:id="@+id/Button01"
+                android:layout_width="160dp" android:layout_height="160dp"
+                android:background="@color/gray0"></Button>
+            <Button android:id="@+id/Button02"
+                android:layout_width="160dp" android:layout_height="160dp"
+                android:background="@color/gray1"></Button>
+        </TableRow>
+        <TableRow android:id="@+id/TableRow02" android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <Button android:id="@+id/Button03"
+                android:layout_width="160dp" android:layout_height="160dp"
+                android:background="@color/gray2"></Button>
+            <Button android:id="@+id/Button04"
+                android:layout_width="160dp" android:layout_height="160dp"
+                android:background="@color/gray3"></Button>
+        </TableRow>
+    </TableLayout>
+
     <com.saulpower.piechart.views.PieChartView
         android:id="@+id/chart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_centerInParent="true"
-        android:layout_margin="10dp"/>
+        android:layout_margin="10dp"
+        android:visibility="invisible"/>
 
     <Button
         android:id="@+id/mainbutton"
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_gravity="center"
-        android:background="@drawable/mainroundedbutton"/>
+        android:background="@drawable/mainroundedbutton"
+        android:visibility="invisible"/>
 
 </FrameLayout>
