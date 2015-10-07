@@ -93,12 +93,6 @@ public class HomeFragment extends Fragment {
         mChart = (PieChartView) rootView.findViewById(R.id.chart);
         mMainButton = (Button) rootView.findViewById(R.id.mainbutton);
 
-        mMainButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                new DataRequestor().execute("5609e8fecd387d810129f207");
-            }
-        });
-
         new DataRequestor().execute("");
 
         // Inflate the layout for this fragment
@@ -230,11 +224,13 @@ public class HomeFragment extends Fragment {
         protected void onPostExecute(String result) {
             List<Float> slices = new ArrayList<Float>();
             List<String> titles = new ArrayList<String>();
+            final List<String> ids = new ArrayList<String>();
 
             for (int i = 0 ; i < ja.length() ; i++) {
                 slices.add(1f / ja.length());
                 try {
                     titles.add(ja.getJSONObject(i).getString("name"));
+                    ids.add(ja.getJSONObject(i).getString("_id"));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -247,7 +243,7 @@ public class HomeFragment extends Fragment {
             mChart.setAdapter(adapter);
             mChart.setOnPieChartChangeListener(new PieChartView.OnPieChartChangeListener() {
                 @Override
-                public void onSelectionChanged(int index) {
+                public void onSelectionChanged(final int index) {
                     int imageId;
 
                     switch (index % 4) {
@@ -268,6 +264,11 @@ public class HomeFragment extends Fragment {
                     }
 
                     mMainButton.setBackgroundResource(imageId);
+                    mMainButton.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+                            new DataRequestor().execute(ids.get(index));
+                        }
+                    });
                 }
             });
         }
