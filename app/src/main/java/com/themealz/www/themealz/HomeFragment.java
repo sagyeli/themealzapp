@@ -222,6 +222,10 @@ public class HomeFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String result) {
+            if (ja == null) {
+                return;
+            }
+
             List<Float> slices = new ArrayList<Float>();
             List<String> titles = new ArrayList<String>();
             final List<String> ids = new ArrayList<String>();
