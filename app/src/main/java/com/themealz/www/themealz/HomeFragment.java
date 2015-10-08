@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TableLayout;
 
 import com.saulpower.piechart.adapter.PieChartAdapter;
 import com.saulpower.piechart.extra.Dynamics;
@@ -52,6 +53,11 @@ public class HomeFragment extends Fragment {
     public PieChartView mChart;
     public Button mMainButton;
 
+    public Button pizzaSlice;
+    public Button sushiSlice;
+    public Button meatSlice;
+    public Button falafelSlice;
+
     private OnFragmentInteractionListener mListener;
 
     /**
@@ -93,7 +99,31 @@ public class HomeFragment extends Fragment {
         mChart = (PieChartView) rootView.findViewById(R.id.chart);
         mMainButton = (Button) rootView.findViewById(R.id.mainbutton);
 
-        new DataRequestor().execute("");
+        pizzaSlice = (Button) rootView.findViewById(R.id.pizza_slice);
+        sushiSlice = (Button) rootView.findViewById(R.id.sushi_slice);
+        meatSlice = (Button) rootView.findViewById(R.id.meat_slice);
+        falafelSlice = (Button) rootView.findViewById(R.id.falafel_slice);
+
+        pizzaSlice.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                new DataRequestor().execute("5613bbe719bd6b4f232e6bfb");
+            }
+        });
+        sushiSlice.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                new DataRequestor().execute("5613b9d519bd6b4f232e6bf1");
+            }
+        });
+        meatSlice.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                new DataRequestor().execute("5612f45519bd6b4f232e6bcb");
+            }
+        });
+        falafelSlice.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                new DataRequestor().execute("5613bdf719bd6b4f232e6c0e");
+            }
+        });
 
         // Inflate the layout for this fragment
         return rootView;
@@ -225,6 +255,10 @@ public class HomeFragment extends Fragment {
             if (ja == null) {
                 return;
             }
+
+            ((TableLayout) rootView.findViewById(R.id.mainTableLayout)).setVisibility(View.INVISIBLE);
+            ((PieChartView) rootView.findViewById(R.id.chart)).setVisibility(View.VISIBLE);
+            ((Button) rootView.findViewById(R.id.mainbutton)).setVisibility(View.VISIBLE);
 
             List<Float> slices = new ArrayList<Float>();
             List<String> titles = new ArrayList<String>();
