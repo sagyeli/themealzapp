@@ -39,14 +39,7 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class HomeFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    public ArrayList<String> selectedMealOptionsIds;
 
     public View rootView;
     public ViewGroup mContainer;
@@ -60,20 +53,9 @@ public class HomeFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static HomeFragment newInstance(String param1, String param2) {
         HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -85,10 +67,9 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+//        if (getArguments() != null) {
+//
+//        }
     }
 
     @Override
@@ -96,6 +77,9 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_home, container, false);
         mContainer = container;
+
+        selectedMealOptionsIds = new ArrayList<String>();
+
         mChart = (PieChartView) rootView.findViewById(R.id.chart);
         mMainButton = (Button) rootView.findViewById(R.id.mainbutton);
 
@@ -106,22 +90,26 @@ public class HomeFragment extends Fragment {
 
         pizzaSlice.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                new DataRequestor().execute("5613bbe719bd6b4f232e6bfb");
+                selectedMealOptionsIds.add("5613bbe719bd6b4f232e6bfb");
+                new DataRequestor().execute("");
             }
         });
         sushiSlice.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                new DataRequestor().execute("5613b9d519bd6b4f232e6bf1");
+                selectedMealOptionsIds.add("5613b9d519bd6b4f232e6bf1");
+                new DataRequestor().execute("");
             }
         });
         meatSlice.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                new DataRequestor().execute("5612f45519bd6b4f232e6bcb");
+                selectedMealOptionsIds.add("5612f45519bd6b4f232e6bcb");
+                new DataRequestor().execute("");
             }
         });
         falafelSlice.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                new DataRequestor().execute("5613bdf719bd6b4f232e6c0e");
+                selectedMealOptionsIds.add("5613be2119bd6b4f232e6c11");
+                new DataRequestor().execute("");
             }
         });
 
@@ -184,6 +172,19 @@ public class HomeFragment extends Fragment {
         public void onFragmentInteraction(Uri uri);
     }
 
+    public void onBackPressed() {
+        selectedMealOptionsIds.remove(selectedMealOptionsIds.size() - 1);
+        if (selectedMealOptionsIds.size() > 0) {
+            new DataRequestor().execute("");
+        }
+        else {
+            ((TableLayout) rootView.findViewById(R.id.mainTableLayout)).setVisibility(View.VISIBLE);
+            mChart.onPause();
+            mChart.setVisibility(View.INVISIBLE);
+            mMainButton.setVisibility(View.INVISIBLE);
+        }
+    }
+
     /**
      * A very simple dynamics implementation with spring-like behavior
      */
@@ -217,11 +218,12 @@ public class HomeFragment extends Fragment {
 
     private class DataRequestor extends AsyncTask<String, Void, String> {
         private JSONArray ja;
+        private String id = selectedMealOptionsIds.size() > 0 ? selectedMealOptionsIds.get(selectedMealOptionsIds.size() - 1) : null;
 
         @Override
         protected String doInBackground(String... params) {
             try {
-                URL url = new URL("http://themealz.com/api/mealoptions" + (params.length > 0 && params[0] != "" ? "/children/" + params[0] : ""));
+                URL url = new URL("http://themealz.com/api/mealoptions" + (id != null ? "/children/" + id : ""));
                 HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
                 urlConnection.connect();
@@ -257,8 +259,9 @@ public class HomeFragment extends Fragment {
             }
 
             ((TableLayout) rootView.findViewById(R.id.mainTableLayout)).setVisibility(View.INVISIBLE);
-            ((PieChartView) rootView.findViewById(R.id.chart)).setVisibility(View.VISIBLE);
-            ((Button) rootView.findViewById(R.id.mainbutton)).setVisibility(View.VISIBLE);
+            mChart.setVisibility(View.VISIBLE);
+            mChart.onResume();
+            mMainButton.setVisibility(View.VISIBLE);
 
             List<Float> slices = new ArrayList<Float>();
             List<String> titles = new ArrayList<String>();
@@ -304,7 +307,10 @@ public class HomeFragment extends Fragment {
                     mMainButton.setBackgroundResource(imageId);
                     mMainButton.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
-                            new DataRequestor().execute(ids.get(index));
+                            if (selectedMealOptionsIds.size() == 0 || ids.get(index) != selectedMealOptionsIds.get(selectedMealOptionsIds.size() - 1)) {
+                                selectedMealOptionsIds.add(ids.get(index));
+                                new DataRequestor().execute("");
+                            }
                         }
                     });
                 }

@@ -147,6 +147,18 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    @Override
+    public void onBackPressed() {
+        if (fragment.getClass() == HomeFragment.class) {
+            if (((HomeFragment) fragment).selectedMealOptionsIds.size() > 0) {
+                ((HomeFragment) fragment).onBackPressed();
+            }
+            else {
+                super.onBackPressed();
+            }
+        }
+    }
+
     /**
      * A placeholder fragment containing a simple view.
      */
