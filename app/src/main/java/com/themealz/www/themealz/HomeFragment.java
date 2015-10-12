@@ -102,13 +102,13 @@ public class HomeFragment extends Fragment {
         });
         meatSlice.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                selectedMealOptionsIds.add("5612f45519bd6b4f232e6bcb");
+                selectedMealOptionsIds.add("561af3f2721bc74808fc31a2");
                 new DataRequestor().execute("");
             }
         });
         falafelSlice.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                selectedMealOptionsIds.add("5613be2119bd6b4f232e6c11");
+                selectedMealOptionsIds.add("5613bdf519bd6b4f232e6c0d");
                 new DataRequestor().execute("");
             }
         });
