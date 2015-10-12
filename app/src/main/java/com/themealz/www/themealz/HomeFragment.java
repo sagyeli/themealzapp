@@ -270,7 +270,7 @@ public class HomeFragment extends Fragment {
             for (int i = 0 ; i < ja.length() ; i++) {
                 slices.add(1f / ja.length());
                 try {
-                    titles.add(ja.getJSONObject(i).getString("name"));
+                    titles.add(ja.getJSONObject(i).has("label") && ja.getJSONObject(i).getString("label").length() > 0 ? ja.getJSONObject(i).getString("label") : ja.getJSONObject(i).getString("name"));
                     ids.add(ja.getJSONObject(i).getString("_id"));
                 } catch (JSONException e) {
                     e.printStackTrace();
