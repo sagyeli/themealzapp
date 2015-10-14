@@ -11,6 +11,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 
 import com.saulpower.piechart.extra.UiUtils;
@@ -135,6 +136,7 @@ public class PieSliceDrawable extends Drawable {
 		mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		mPaint.setColor(mContext.getResources().getColor(R.color.secondaryHeaderColor));
 		mPaint.setTextSize(72);
+		mPaint.setTypeface(Typeface.createFromAsset(mContext.getAssets(), "fonts/regular.ttf"));
 
 		mStrokePaint = new Paint(mPaint);
 		mStrokePaint.setStyle(Paint.Style.STROKE);

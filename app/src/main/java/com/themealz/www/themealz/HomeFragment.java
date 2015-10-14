@@ -2,6 +2,7 @@ package com.themealz.www.themealz;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TableLayout;
+import android.widget.TextView;
 
 import com.saulpower.piechart.adapter.PieChartAdapter;
 import com.saulpower.piechart.extra.Dynamics;
@@ -18,7 +20,6 @@ import com.saulpower.piechart.views.PieChartView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -79,6 +80,8 @@ public class HomeFragment extends Fragment {
         mContainer = container;
 
         selectedMealOptionsIds = new ArrayList<String>();
+
+        ((TextView) rootView.findViewById(R.id.maintitle)).setTypeface(Typeface.createFromAsset(mContainer.getContext().getAssets(), "fonts/regular.ttf"));
 
         mChart = (PieChartView) rootView.findViewById(R.id.chart);
         mMainButton = (Button) rootView.findViewById(R.id.mainbutton);
