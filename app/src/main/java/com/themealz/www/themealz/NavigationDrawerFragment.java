@@ -3,6 +3,7 @@ package com.themealz.www.themealz;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -21,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -89,7 +91,7 @@ public class NavigationDrawerFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         mDrawerListView = (ListView) inflater.inflate(
                 R.layout.fragment_navigation_drawer, container, false);
@@ -100,16 +102,25 @@ public class NavigationDrawerFragment extends Fragment {
             }
         });
         mDrawerListView.setAdapter(new ArrayAdapter<String>(
-                getActionBar().getThemedContext(),
-                R.layout.drawer_list_item,
-                R.id.label,
-                new String[]{
-                        getString(R.string.title_home),
-                        getString(R.string.title_restaurants_list),
-                        getString(R.string.title_help),
-                        getString(R.string.title_info),
-                        getString(R.string.title_contact),
-                }));
+            getActionBar().getThemedContext(),
+            R.layout.drawer_list_item,
+            R.id.label,
+            new String[]{
+                    getString(R.string.title_home),
+                    getString(R.string.title_restaurants_list),
+                    getString(R.string.title_help),
+                    getString(R.string.title_info),
+                    getString(R.string.title_contact),
+            }) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+               View v = super.getView(position, convertView, parent);
+
+                ((TextView) v.findViewById(R.id.label)).setTypeface(Typeface.createFromAsset(parent.getContext().getAssets(), "fonts/regular.ttf"));
+
+                return v;
+            }
+        });
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;
     }
