@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
@@ -45,6 +46,7 @@ public class HomeFragment extends Fragment {
     public View rootView;
     public ViewGroup mContainer;
     public PieChartView mChart;
+    public ImageView mPlate;
     public Button mMainButton;
 
     public Button pizzaSlice;
@@ -84,6 +86,7 @@ public class HomeFragment extends Fragment {
         ((TextView) rootView.findViewById(R.id.maintitle)).setTypeface(Typeface.createFromAsset(mContainer.getContext().getAssets(), "fonts/regular.ttf"));
 
         mChart = (PieChartView) rootView.findViewById(R.id.chart);
+//        mPlate = (ImageView) rootView.findViewById(R.id.plate);
         mMainButton = (Button) rootView.findViewById(R.id.mainbutton);
 
         pizzaSlice = (Button) rootView.findViewById(R.id.pizza_slice);
@@ -118,6 +121,37 @@ public class HomeFragment extends Fragment {
 
         // Inflate the layout for this fragment
         return rootView;
+    }
+
+    void setSelection(final int index, final List<String> ids) {
+        int imageId;
+
+        switch (index % 4) {
+            case 0:
+                imageId = R.drawable.chicken;
+                break;
+            case 1:
+                imageId = R.drawable.meat;
+                break;
+            case 2:
+                imageId = R.drawable.steak;
+                break;
+            case 3:
+                imageId = R.drawable.turkey;
+                break;
+            default:
+                imageId = R.drawable.chicken;
+        }
+
+        mMainButton.setBackgroundResource(imageId);
+        mMainButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if (selectedMealOptionsIds.size() == 0 || ids.get(index) != selectedMealOptionsIds.get(selectedMealOptionsIds.size() - 1)) {
+                    selectedMealOptionsIds.add(ids.get(index));
+                    new DataRequestor().execute("");
+                }
+            }
+        });
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -184,6 +218,7 @@ public class HomeFragment extends Fragment {
             ((TableLayout) rootView.findViewById(R.id.mainTableLayout)).setVisibility(View.VISIBLE);
             mChart.onPause();
             mChart.setVisibility(View.INVISIBLE);
+//            mPlate.setVisibility(View.INVISIBLE);
             mMainButton.setVisibility(View.INVISIBLE);
         }
     }
@@ -264,6 +299,7 @@ public class HomeFragment extends Fragment {
             ((TableLayout) rootView.findViewById(R.id.mainTableLayout)).setVisibility(View.INVISIBLE);
             mChart.setVisibility(View.VISIBLE);
             mChart.onResume();
+//            mPlate.setVisibility(View.VISIBLE);
             mMainButton.setVisibility(View.VISIBLE);
 
             List<Float> slices = new ArrayList<Float>();
@@ -285,39 +321,13 @@ public class HomeFragment extends Fragment {
             mChart.setDynamics(new FrictionDynamics(0.95f));
             mChart.setSnapToAnchor(PieChartView.PieChartAnchor.BOTTOM);
             mChart.setAdapter(adapter);
-            mChart.setOnPieChartChangeListener(new PieChartView.OnPieChartChangeListener() {
+            mChart.setOnPieChartSlideListener(new PieChartView.OnPieChartSlideListener() {
                 @Override
-                public void onSelectionChanged(final int index) {
-                    int imageId;
-
-                    switch (index % 4) {
-                        case 0:
-                            imageId = R.drawable.chicken;
-                            break;
-                        case 1:
-                            imageId = R.drawable.meat;
-                            break;
-                        case 2:
-                            imageId = R.drawable.steak;
-                            break;
-                        case 3:
-                            imageId = R.drawable.turkey;
-                            break;
-                        default:
-                            imageId = R.drawable.chicken;
-                    }
-
-                    mMainButton.setBackgroundResource(imageId);
-                    mMainButton.setOnClickListener(new View.OnClickListener() {
-                        public void onClick(View v) {
-                            if (selectedMealOptionsIds.size() == 0 || ids.get(index) != selectedMealOptionsIds.get(selectedMealOptionsIds.size() - 1)) {
-                                selectedMealOptionsIds.add(ids.get(index));
-                                new DataRequestor().execute("");
-                            }
-                        }
-                    });
+                public void onSelectionSlided(final int index) {
+                    setSelection(index, ids);
                 }
             });
+            setSelection(0, ids);
         }
 
         @Override

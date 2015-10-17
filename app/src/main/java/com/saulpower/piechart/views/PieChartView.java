@@ -35,6 +35,7 @@ import com.themealz.www.themealz.R;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * A view that creates a Pie Chart which is backed by an adapter providing the
@@ -177,9 +178,13 @@ public class PieChartView extends SurfaceView implements SurfaceHolder.Callback 
 	/** The current snapped-to index */
 	private int mCurrentIndex;
 
+	private int mTemporartIndex;
+
 	private Bitmap mDrawingCache;
 	
 	private OnPieChartChangeListener mOnPieChartChangeListener;
+
+	private OnPieChartSlideListener mOnPieChartSlideListener;
 	
 	private OnItemLongClickListener mOnItemLongClickListener;
 	
@@ -295,6 +300,23 @@ public class PieChartView extends SurfaceView implements SurfaceHolder.Callback 
 			});
 		}
 	}
+
+	private void setTemporaryIndex(final int index) {
+
+		mCurrentIndex = index;
+
+		if (mOnPieChartSlideListener != null && !mChartHidden && isLoaded()) {
+
+			mHandler.post(new Runnable() {
+
+				@Override
+				public void run() {
+
+					mOnPieChartSlideListener.onSelectionSlided(index);
+				}
+			});
+		}
+	}
 	
 	public void setSnapToAnchor(PieChartAnchor anchor) {
 		mSnapToDegree = anchor.degrees;
@@ -362,6 +384,11 @@ public class PieChartView extends SurfaceView implements SurfaceHolder.Callback 
 	public void setOnPieChartChangeListener(
 			OnPieChartChangeListener mOnPieChartChangeListener) {
 		this.mOnPieChartChangeListener = mOnPieChartChangeListener;
+	}
+
+	public void setOnPieChartSlideListener(
+			OnPieChartSlideListener mOnPieChartSlideListener) {
+		this.mOnPieChartSlideListener = mOnPieChartSlideListener;
 	}
 	
 	public void setOnPieChartExpandListener(
@@ -1151,9 +1178,9 @@ public class PieChartView extends SurfaceView implements SurfaceHolder.Callback 
     }
     
     private void rotateChart(PieSliceDrawable slice, int index, boolean animated) {
-    	
-    	synchronized (mDrawables) {
-    		
+
+		synchronized (mDrawables) {
+
 	    	if (mDrawables.size() == 0
 	    			|| mDrawables.size() <= index
 	    			|| !isEnabled()) return;
@@ -1230,6 +1257,16 @@ public class PieChartView extends SurfaceView implements SurfaceHolder.Callback 
 
     	final float change = (mRotationDegree - previous);
     	mRotatingClockwise = (change > 0 && Math.abs(change) < 300) || (Math.abs(change) > 300 && mRotatingClockwise);
+
+		for (int index = 0; index < mDrawables.size(); index++) {
+			final PieSliceDrawable slice = mDrawables.get(index);
+
+			if (slice.containsDegree(mRotationDegree, mSnapToDegree) && mTemporartIndex != index) {
+				mTemporartIndex = index;
+				setTemporaryIndex(mTemporartIndex);
+				break;
+			}
+		}
     }
     /**
      * Returns the current PieChartAdapter
@@ -1662,6 +1699,10 @@ public class PieChartView extends SurfaceView implements SurfaceHolder.Callback 
 	
 	public interface OnPieChartChangeListener {
 		public void onSelectionChanged(int index);
+	}
+
+	public interface OnPieChartSlideListener {
+		public void onSelectionSlided(int index);
 	}
 	
 	public interface OnItemClickListener {
