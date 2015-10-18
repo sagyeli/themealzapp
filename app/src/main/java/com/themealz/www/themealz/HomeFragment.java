@@ -9,6 +9,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TableLayout;
@@ -118,6 +121,12 @@ public class HomeFragment extends Fragment {
                 new DataRequestor().execute("");
             }
         });
+
+        Animation fadeIn = new AlphaAnimation(0, 1);
+        fadeIn.setInterpolator(new DecelerateInterpolator());
+        fadeIn.setStartOffset(1000);
+        fadeIn.setDuration(750);
+        ((TextView) rootView.findViewById(R.id.maintitle)).setAnimation(fadeIn);
 
         // Inflate the layout for this fragment
         return rootView;
