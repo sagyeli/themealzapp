@@ -319,7 +319,7 @@ public class HomeFragment extends Fragment {
             PieChartAdapter adapter = new PieChartAdapter(mContainer.getContext(), slices, titles);
 
             mChart.setDynamics(new FrictionDynamics(0.95f));
-            mChart.setSnapToAnchor(PieChartView.PieChartAnchor.BOTTOM);
+            mChart.setSnapToAnchor(PieChartView.PieChartAnchor.TOP);
             mChart.setAdapter(adapter);
             mChart.setOnPieChartSlideListener(new PieChartView.OnPieChartSlideListener() {
                 @Override
@@ -327,7 +327,7 @@ public class HomeFragment extends Fragment {
                     setSelection(index, ids);
                 }
             });
-            setSelection(0, ids);
+            setSelection(mChart.getCurrentIndex(), ids);
         }
 
         @Override
