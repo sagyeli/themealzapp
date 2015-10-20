@@ -12,8 +12,11 @@ import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
+import android.view.animation.Transformation;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
@@ -51,6 +54,7 @@ public class HomeFragment extends Fragment {
     public PieChartView mChart;
     public ImageView mPlate;
     public Button mMainButton;
+    public ListView mSummaryList;
 
     public Button pizzaSlice;
     public Button sushiSlice;
@@ -91,6 +95,7 @@ public class HomeFragment extends Fragment {
         mChart = (PieChartView) rootView.findViewById(R.id.chart);
 //        mPlate = (ImageView) rootView.findViewById(R.id.plate);
         mMainButton = (Button) rootView.findViewById(R.id.mainbutton);
+        mSummaryList = (ListView) rootView.findViewById(R.id.summarylist);
 
         pizzaSlice = (Button) rootView.findViewById(R.id.pizza_slice);
         sushiSlice = (Button) rootView.findViewById(R.id.sushi_slice);
@@ -122,11 +127,39 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        Animation fadeIn = new AlphaAnimation(0, 1);
-        fadeIn.setInterpolator(new DecelerateInterpolator());
-        fadeIn.setStartOffset(1000);
-        fadeIn.setDuration(750);
-        ((TextView) rootView.findViewById(R.id.maintitle)).setAnimation(fadeIn);
+        Animation fadeInAnimation = new AlphaAnimation(0, 1);
+        fadeInAnimation.setInterpolator(new DecelerateInterpolator());
+        fadeInAnimation.setStartOffset(1000);
+        fadeInAnimation.setDuration(750);
+        ((TextView) rootView.findViewById(R.id.maintitle)).setAnimation(fadeInAnimation);
+
+        Animation marginAnimation = new Animation() {
+            @Override
+            protected void applyTransformation(float interpolatedTime, Transformation t) {
+                final float scale = mContainer.getContext().getResources().getDisplayMetrics().density;
+                int factor = (int)((240 * scale + 0.5f) * (1 - interpolatedTime));
+                ViewGroup.MarginLayoutParams layoutParams;
+
+                layoutParams = (ViewGroup.MarginLayoutParams) pizzaSlice.getLayoutParams();
+                layoutParams.setMargins(factor, factor, factor, factor);
+                pizzaSlice.setLayoutParams(layoutParams);
+
+                layoutParams = (ViewGroup.MarginLayoutParams) sushiSlice.getLayoutParams();
+                layoutParams.setMargins(factor, factor, factor, factor);
+                sushiSlice.setLayoutParams(layoutParams);
+
+                layoutParams = (ViewGroup.MarginLayoutParams) meatSlice.getLayoutParams();
+                layoutParams.setMargins(factor, factor, factor, factor);
+                meatSlice.setLayoutParams(layoutParams);
+
+                layoutParams = (ViewGroup.MarginLayoutParams) falafelSlice.getLayoutParams();
+                layoutParams.setMargins(factor, factor, factor, factor);
+                falafelSlice.setLayoutParams(layoutParams);
+            }
+        };
+        marginAnimation.setStartOffset(1750);
+        marginAnimation.setDuration(1250); // in ms
+        rootView.startAnimation(marginAnimation);
 
         // Inflate the layout for this fragment
         return rootView;
@@ -229,6 +262,7 @@ public class HomeFragment extends Fragment {
             mChart.setVisibility(View.INVISIBLE);
 //            mPlate.setVisibility(View.INVISIBLE);
             mMainButton.setVisibility(View.INVISIBLE);
+            mSummaryList.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -301,7 +335,27 @@ public class HomeFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String result) {
-            if (ja == null) {
+            if (ja == null || ja.length() == 0) {
+                mChart.onPause();
+                mChart.setVisibility(View.INVISIBLE);
+//            mPlate.setVisibility(View.INVISIBLE);
+                mMainButton.setVisibility(View.INVISIBLE);
+                mSummaryList.setVisibility(View.VISIBLE);
+
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContainer.getContext(),
+                        android.R.layout.simple_list_item_1, android.R.id.text1, new String[] {
+                        "Moe's Tavern",
+                        "המסעדה הגדולה",
+                        "Café 80's",
+                        "Ten Forward",
+                        "Monk's Café",
+                        "אימפריית השמש",
+                        "Central Perk",
+                        "Cheers"
+                });
+
+                mSummaryList.setAdapter(adapter);
+
                 return;
             }
 
@@ -310,6 +364,7 @@ public class HomeFragment extends Fragment {
             mChart.onResume();
 //            mPlate.setVisibility(View.VISIBLE);
             mMainButton.setVisibility(View.VISIBLE);
+            mSummaryList.setVisibility(View.INVISIBLE);
 
             List<Float> slices = new ArrayList<Float>();
             List<String> titles = new ArrayList<String>();

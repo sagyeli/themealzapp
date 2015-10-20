@@ -21,22 +21,26 @@
         android:layout_gravity="center"
         android:layout_centerInParent="true"
         android:visibility="visible">
-        <TableRow android:id="@+id/mainTableRow01" android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+        <TableRow android:id="@+id/mainTableRow01"
+            android:gravity="center_vertical|center_horizontal">
             <Button android:id="@+id/pizza_slice"
                 android:layout_width="160dp" android:layout_height="160dp"
+                android:layout_margin="180dp"
                 android:background="@drawable/pizza_slice"></Button>
             <Button android:id="@+id/sushi_slice"
                 android:layout_width="160dp" android:layout_height="160dp"
+                android:layout_margin="180dp"
                 android:background="@drawable/sushi_slice"></Button>
         </TableRow>
-        <TableRow android:id="@+id/mainTableRow02" android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+        <TableRow android:id="@+id/mainTableRow02"
+            android:gravity="center_vertical|center_horizontal">
             <Button android:id="@+id/meat_slice"
                 android:layout_width="160dp" android:layout_height="160dp"
+                android:layout_margin="180dp"
                 android:background="@drawable/meat_slice"></Button>
             <Button android:id="@+id/falafel_slice"
                 android:layout_width="160dp" android:layout_height="160dp"
+                android:layout_margin="180dp"
                 android:background="@drawable/falafel_slice"></Button>
         </TableRow>
     </TableLayout>
@@ -64,5 +68,11 @@
         android:layout_gravity="center"
         android:background="@drawable/mainroundedbutton"
         android:visibility="invisible"/>
+
+    <ListView
+        android:id="@+id/summarylist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </ListView>
 
 </FrameLayout>
