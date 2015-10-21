@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TableLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.saulpower.piechart.adapter.PieChartAdapter;
@@ -64,6 +63,9 @@ public class HomeFragment extends Fragment {
     public Button meatSlice;
     public Button falafelSlice;
 
+    public Animation stepFadeOut;
+    public Animation stepFadeIn;
+
     private OnFragmentInteractionListener mListener;
 
     public static HomeFragment newInstance(String param1, String param2) {
@@ -106,6 +108,18 @@ public class HomeFragment extends Fragment {
         sushiSlice = (Button) rootView.findViewById(R.id.sushi_slice);
         meatSlice = (Button) rootView.findViewById(R.id.meat_slice);
         falafelSlice = (Button) rootView.findViewById(R.id.falafel_slice);
+
+        stepFadeOut = new AlphaAnimation(1, 0);
+        stepFadeOut.setInterpolator(new DecelerateInterpolator());
+        stepFadeOut.setDuration(500);
+        stepFadeOut.setFillEnabled(true);
+        stepFadeOut.setFillAfter(true);
+        stepFadeIn = new AlphaAnimation(0, 1);
+        stepFadeIn.setInterpolator(new DecelerateInterpolator());
+        stepFadeIn.setStartOffset(500);
+        stepFadeIn.setDuration(500);
+        stepFadeIn.setFillEnabled(true);
+        stepFadeIn.setFillAfter(true);
 
         pizzaSlice.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -258,13 +272,10 @@ public class HomeFragment extends Fragment {
             new DataRequestor().execute("");
         }
         else {
-            ((TableLayout) rootView.findViewById(R.id.mainTableLayout)).setVisibility(View.VISIBLE);
             mChart.onPause();
             mChart.setVisibility(View.INVISIBLE);
-//            mPlate.setVisibility(View.INVISIBLE);
-            mMainButton.setVisibility(View.INVISIBLE);
-            mMainButtonTitle.setVisibility(View.INVISIBLE);
-            mSummaryList.setVisibility(View.INVISIBLE);
+            ((RelativeLayout) rootView.findViewById(R.id.step_2)).startAnimation(stepFadeOut);
+            ((RelativeLayout) rootView.findViewById(R.id.step_1)).startAnimation(stepFadeIn);
         }
     }
 
@@ -281,8 +292,6 @@ public class HomeFragment extends Fragment {
          *
          * @param frictionFactor The friction factor. Should be between 0 and 1.
          *            A higher number means a slower dissipating speed.
-         * @param snapToFactor The snap to factor. Should be between 0 and 1. A
-         *            higher number means a stronger snap.
          */
         public SimpleDynamics(final float frictionFactor) {
             mFrictionFactor = frictionFactor;
@@ -340,10 +349,8 @@ public class HomeFragment extends Fragment {
             if (ja == null || ja.length() == 0) {
                 mChart.onPause();
                 mChart.setVisibility(View.INVISIBLE);
-//            mPlate.setVisibility(View.INVISIBLE);
-                mMainButton.setVisibility(View.INVISIBLE);
-                mMainButtonTitle.setVisibility(View.INVISIBLE);
-                mSummaryList.setVisibility(View.VISIBLE);
+                ((RelativeLayout) rootView.findViewById(R.id.step_2)).startAnimation(stepFadeOut);
+                ((RelativeLayout) rootView.findViewById(R.id.step_3)).startAnimation(stepFadeIn);
 
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContainer.getContext(),
                         android.R.layout.simple_list_item_1, android.R.id.text1, new String[] {
@@ -362,13 +369,13 @@ public class HomeFragment extends Fragment {
                 return;
             }
 
-            ((TableLayout) rootView.findViewById(R.id.mainTableLayout)).setVisibility(View.INVISIBLE);
-            mChart.setVisibility(View.VISIBLE);
-            mChart.onResume();
-//            mPlate.setVisibility(View.VISIBLE);
-            mMainButton.setVisibility(View.VISIBLE);
-            mMainButtonTitle.setVisibility(View.VISIBLE);
-            mSummaryList.setVisibility(View.INVISIBLE);
+            if (selectedMealOptionsIds.size() <= 1) {
+                ((RelativeLayout) rootView.findViewById(R.id.step_1)).startAnimation(stepFadeOut);
+                mChart.setVisibility(View.VISIBLE);
+                mChart.onResume();
+                ((RelativeLayout) rootView.findViewById(R.id.step_2)).startAnimation(stepFadeIn);
+                ((RelativeLayout) rootView.findViewById(R.id.step_3)).startAnimation(stepFadeOut);
+            }
 
             List<Float> slices = new ArrayList<Float>();
             final List<String> titles = new ArrayList<String>();
