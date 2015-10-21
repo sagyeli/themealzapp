@@ -69,10 +69,21 @@
         android:background="@drawable/mainroundedbutton"
         android:visibility="invisible"/>
 
+    <TextView
+        android:id="@+id/mainbuttontitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textColor="@color/secondaryHeaderColor"
+        android:textSize="21dp"
+        android:paddingTop="145dp"
+        android:visibility="invisible"/>
+
     <ListView
         android:id="@+id/summarylist"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="75dp">
     </ListView>
 
 </FrameLayout>

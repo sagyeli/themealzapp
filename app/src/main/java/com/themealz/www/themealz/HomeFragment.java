@@ -54,6 +54,7 @@ public class HomeFragment extends Fragment {
     public PieChartView mChart;
     public ImageView mPlate;
     public Button mMainButton;
+    public TextView mMainButtonTitle;
     public ListView mSummaryList;
 
     public Button pizzaSlice;
@@ -91,10 +92,12 @@ public class HomeFragment extends Fragment {
         selectedMealOptionsIds = new ArrayList<String>();
 
         ((TextView) rootView.findViewById(R.id.maintitle)).setTypeface(Typeface.createFromAsset(mContainer.getContext().getAssets(), "fonts/regular.ttf"));
+        ((TextView) rootView.findViewById(R.id.mainbuttontitle)).setTypeface(Typeface.createFromAsset(mContainer.getContext().getAssets(), "fonts/regular.ttf"));
 
         mChart = (PieChartView) rootView.findViewById(R.id.chart);
 //        mPlate = (ImageView) rootView.findViewById(R.id.plate);
         mMainButton = (Button) rootView.findViewById(R.id.mainbutton);
+        mMainButtonTitle = (TextView) rootView.findViewById(R.id.mainbuttontitle);
         mSummaryList = (ListView) rootView.findViewById(R.id.summarylist);
 
         pizzaSlice = (Button) rootView.findViewById(R.id.pizza_slice);
@@ -165,7 +168,7 @@ public class HomeFragment extends Fragment {
         return rootView;
     }
 
-    void setSelection(final int index, final List<String> ids) {
+    void setSelection(final int index, final List<String> ids, List<String> titles) {
         int imageId;
 
         switch (index % 4) {
@@ -194,6 +197,7 @@ public class HomeFragment extends Fragment {
                 }
             }
         });
+        mMainButtonTitle.setText(titles.get(index));
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -262,6 +266,7 @@ public class HomeFragment extends Fragment {
             mChart.setVisibility(View.INVISIBLE);
 //            mPlate.setVisibility(View.INVISIBLE);
             mMainButton.setVisibility(View.INVISIBLE);
+            mMainButtonTitle.setVisibility(View.INVISIBLE);
             mSummaryList.setVisibility(View.INVISIBLE);
         }
     }
@@ -340,6 +345,7 @@ public class HomeFragment extends Fragment {
                 mChart.setVisibility(View.INVISIBLE);
 //            mPlate.setVisibility(View.INVISIBLE);
                 mMainButton.setVisibility(View.INVISIBLE);
+                mMainButtonTitle.setVisibility(View.INVISIBLE);
                 mSummaryList.setVisibility(View.VISIBLE);
 
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContainer.getContext(),
@@ -364,10 +370,11 @@ public class HomeFragment extends Fragment {
             mChart.onResume();
 //            mPlate.setVisibility(View.VISIBLE);
             mMainButton.setVisibility(View.VISIBLE);
+            mMainButtonTitle.setVisibility(View.VISIBLE);
             mSummaryList.setVisibility(View.INVISIBLE);
 
             List<Float> slices = new ArrayList<Float>();
-            List<String> titles = new ArrayList<String>();
+            final List<String> titles = new ArrayList<String>();
             final List<String> ids = new ArrayList<String>();
 
             for (int i = 0 ; i < ja.length() ; i++) {
@@ -388,10 +395,10 @@ public class HomeFragment extends Fragment {
             mChart.setOnPieChartSlideListener(new PieChartView.OnPieChartSlideListener() {
                 @Override
                 public void onSelectionSlided(final int index) {
-                    setSelection(index, ids);
+                    setSelection(index, ids, titles);
                 }
             });
-            setSelection(mChart.getCurrentIndex(), ids);
+            setSelection(mChart.getCurrentIndex(), ids, titles);
         }
 
         @Override

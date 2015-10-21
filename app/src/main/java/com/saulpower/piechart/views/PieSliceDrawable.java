@@ -229,10 +229,10 @@ public class PieSliceDrawable extends Drawable {
 
 		canvas.drawBitmap(bitmap, translatedX - bitmap.getWidth() / 2, translatedY - bitmap.getHeight() / 2, mPaint);
 
-		canvas.save();
-		canvas.rotate(360 - parentChartRotationDegree, translatedX, translatedY);
-		canvas.drawText(mTitle, translatedX - bounds.width() / 2, translatedY + bounds.height() + mBounds.height() / 10, mPaint);
-		canvas.restore();
+//		canvas.save();
+//		canvas.rotate(360 - parentChartRotationDegree, translatedX, translatedY);
+//		canvas.drawText(mTitle, translatedX - bounds.width() / 2, translatedY + bounds.height() + mBounds.height() / 10, mPaint);
+//		canvas.restore();
 	}
 
 	@Override
