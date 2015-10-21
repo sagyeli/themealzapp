@@ -7,6 +7,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
@@ -140,24 +142,12 @@ public class HomeFragment extends Fragment {
             @Override
             protected void applyTransformation(float interpolatedTime, Transformation t) {
                 final float scale = mContainer.getContext().getResources().getDisplayMetrics().density;
-                int factor = (int)((240 * scale + 0.5f) * (1 - interpolatedTime));
-                ViewGroup.MarginLayoutParams layoutParams;
+                int factor = (int)((232 * scale + 0.5f) * (1 - interpolatedTime)) + 8;
 
-                layoutParams = (ViewGroup.MarginLayoutParams) pizzaSlice.getLayoutParams();
-                layoutParams.setMargins(factor, factor, factor, factor);
-                pizzaSlice.setLayoutParams(layoutParams);
-
-                layoutParams = (ViewGroup.MarginLayoutParams) sushiSlice.getLayoutParams();
-                layoutParams.setMargins(factor, factor, factor, factor);
-                sushiSlice.setLayoutParams(layoutParams);
-
-                layoutParams = (ViewGroup.MarginLayoutParams) meatSlice.getLayoutParams();
-                layoutParams.setMargins(factor, factor, factor, factor);
-                meatSlice.setLayoutParams(layoutParams);
-
-                layoutParams = (ViewGroup.MarginLayoutParams) falafelSlice.getLayoutParams();
-                layoutParams.setMargins(factor, factor, factor, factor);
-                falafelSlice.setLayoutParams(layoutParams);
+                setSlicesMargins(pizzaSlice, factor);
+                setSlicesMargins(sushiSlice, factor);
+                setSlicesMargins(meatSlice, factor);
+                setSlicesMargins(falafelSlice, factor);
             }
         };
         marginAnimation.setStartOffset(1750);
@@ -166,6 +156,12 @@ public class HomeFragment extends Fragment {
 
         // Inflate the layout for this fragment
         return rootView;
+    }
+
+    void setSlicesMargins(Button button, int factor) {
+        ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) falafelSlice.getLayoutParams();
+        layoutParams.setMargins(factor, factor, factor, factor);
+        button.setLayoutParams(layoutParams);
     }
 
     void setSelection(final int index, final List<String> ids, List<String> titles) {
@@ -198,6 +194,7 @@ public class HomeFragment extends Fragment {
             }
         });
         mMainButtonTitle.setText(titles.get(index));
+        rootView.playSoundEffect(SoundEffectConstants.CLICK);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
