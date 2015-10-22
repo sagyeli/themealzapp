@@ -186,21 +186,30 @@ public class HomeFragment extends Fragment {
     void setSelection(final int index, final List<String> ids, List<String> titles) {
         int imageId;
 
-        switch (index % 4) {
+        switch (index % 7) {
             case 0:
-                imageId = R.drawable.chicken;
+                imageId = R.drawable.image01;
                 break;
             case 1:
-                imageId = R.drawable.meat;
+                imageId = R.drawable.image02;
                 break;
             case 2:
-                imageId = R.drawable.steak;
+                imageId = R.drawable.image03;
                 break;
             case 3:
-                imageId = R.drawable.turkey;
+                imageId = R.drawable.image04;
+                break;
+            case 4:
+                imageId = R.drawable.image05;
+                break;
+            case 5:
+                imageId = R.drawable.image06;
+                break;
+            case 6:
+                imageId = R.drawable.image07;
                 break;
             default:
-                imageId = R.drawable.chicken;
+                imageId = R.drawable.image01;
         }
 
         mMainButton.setBackgroundResource(imageId);

@@ -202,21 +202,30 @@ public class PieSliceDrawable extends Drawable {
 //		canvas.drawPath(mPathLeft, mStrokePaint);
 
 		int imageId;
-		switch (position % 4) {
-		case 0:
-			imageId = R.drawable.chicken;
-			break;
-		case 1:
-			imageId = R.drawable.meat;
-			break;
-		case 2:
-			imageId = R.drawable.steak;
-			break;
-		case 3:
-			imageId = R.drawable.turkey;
-			break;
-		default:
-			imageId = R.drawable.chicken;
+		switch (position % 7) {
+			case 0:
+				imageId = R.drawable.image01;
+				break;
+			case 1:
+				imageId = R.drawable.image02;
+				break;
+			case 2:
+				imageId = R.drawable.image03;
+				break;
+			case 3:
+				imageId = R.drawable.image04;
+				break;
+			case 4:
+				imageId = R.drawable.image05;
+				break;
+			case 5:
+				imageId = R.drawable.image06;
+				break;
+			case 6:
+				imageId = R.drawable.image07;
+				break;
+			default:
+				imageId = R.drawable.image01;
 		}
 
 		Bitmap bitmap = RotateBitmap(BitmapFactory.decodeResource(mContext.getResources(), imageId), 360 - parentChartRotationDegree);
