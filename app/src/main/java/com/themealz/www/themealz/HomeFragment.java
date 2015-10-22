@@ -14,10 +14,8 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Transformation;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -56,15 +54,15 @@ public class HomeFragment extends Fragment {
     public ImageView mPlate;
     public Button mMainButton;
     public TextView mMainButtonTitle;
-    public ListView mSummaryList;
+//    public ListView mSummaryList;
 
     public Button pizzaSlice;
     public Button sushiSlice;
     public Button meatSlice;
     public Button falafelSlice;
 
-    public Animation stepFadeOut;
-    public Animation stepFadeIn;
+//    public Animation stepFadeOut;
+//    public Animation stepFadeIn;
 
     private OnFragmentInteractionListener mListener;
 
@@ -102,24 +100,24 @@ public class HomeFragment extends Fragment {
 //        mPlate = (ImageView) rootView.findViewById(R.id.plate);
         mMainButton = (Button) rootView.findViewById(R.id.mainbutton);
         mMainButtonTitle = (TextView) rootView.findViewById(R.id.mainbuttontitle);
-        mSummaryList = (ListView) rootView.findViewById(R.id.summarylist);
+//        mSummaryList = (ListView) rootView.findViewById(R.id.summarylist);
 
         pizzaSlice = (Button) rootView.findViewById(R.id.pizza_slice);
         sushiSlice = (Button) rootView.findViewById(R.id.sushi_slice);
         meatSlice = (Button) rootView.findViewById(R.id.meat_slice);
         falafelSlice = (Button) rootView.findViewById(R.id.falafel_slice);
 
-        stepFadeOut = new AlphaAnimation(1, 0);
-        stepFadeOut.setInterpolator(new DecelerateInterpolator());
-        stepFadeOut.setDuration(500);
-        stepFadeOut.setFillEnabled(true);
-        stepFadeOut.setFillAfter(true);
-        stepFadeIn = new AlphaAnimation(0, 1);
-        stepFadeIn.setInterpolator(new DecelerateInterpolator());
-        stepFadeIn.setStartOffset(500);
-        stepFadeIn.setDuration(500);
-        stepFadeIn.setFillEnabled(true);
-        stepFadeIn.setFillAfter(true);
+//        stepFadeOut = new AlphaAnimation(1, 0);
+//        stepFadeOut.setInterpolator(new DecelerateInterpolator());
+//        stepFadeOut.setDuration(500);
+//        stepFadeOut.setFillEnabled(true);
+//        stepFadeOut.setFillAfter(true);
+//        stepFadeIn = new AlphaAnimation(0, 1);
+//        stepFadeIn.setInterpolator(new DecelerateInterpolator());
+//        stepFadeIn.setStartOffset(500);
+//        stepFadeIn.setDuration(500);
+//        stepFadeIn.setFillEnabled(true);
+//        stepFadeIn.setFillAfter(true);
 
         pizzaSlice.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -143,6 +141,13 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 selectedMealOptionsIds.add("5613bdf519bd6b4f232e6c0d");
                 new DataRequestor().execute("");
+            }
+        });
+
+        ((ImageView) rootView.findViewById(R.id.restaurants_step)).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                ((RelativeLayout) rootView.findViewById(R.id.step_3)).setVisibility(View.INVISIBLE);
+                ((RelativeLayout) rootView.findViewById(R.id.step_4)).setVisibility(View.VISIBLE);
             }
         });
 
@@ -272,10 +277,12 @@ public class HomeFragment extends Fragment {
             new DataRequestor().execute("");
         }
         else {
+            ((RelativeLayout) rootView.findViewById(R.id.step_4)).setVisibility(View.INVISIBLE);
+            ((RelativeLayout) rootView.findViewById(R.id.step_3)).setVisibility(View.INVISIBLE);
             mChart.onPause();
             mChart.setVisibility(View.INVISIBLE);
-            ((RelativeLayout) rootView.findViewById(R.id.step_2)).startAnimation(stepFadeOut);
-            ((RelativeLayout) rootView.findViewById(R.id.step_1)).startAnimation(stepFadeIn);
+            ((RelativeLayout) rootView.findViewById(R.id.step_2)).setVisibility(View.INVISIBLE);
+            ((RelativeLayout) rootView.findViewById(R.id.step_1)).setVisibility(View.VISIBLE);
         }
     }
 
@@ -347,35 +354,36 @@ public class HomeFragment extends Fragment {
         @Override
         protected void onPostExecute(String result) {
             if (ja == null || ja.length() == 0) {
+                ((RelativeLayout) rootView.findViewById(R.id.step_1)).setVisibility(View.INVISIBLE);
                 mChart.onPause();
                 mChart.setVisibility(View.INVISIBLE);
-                ((RelativeLayout) rootView.findViewById(R.id.step_2)).startAnimation(stepFadeOut);
-                ((RelativeLayout) rootView.findViewById(R.id.step_3)).startAnimation(stepFadeIn);
+                ((RelativeLayout) rootView.findViewById(R.id.step_2)).setVisibility(View.INVISIBLE);
+                ((RelativeLayout) rootView.findViewById(R.id.step_3)).setVisibility(View.VISIBLE);
+                ((RelativeLayout) rootView.findViewById(R.id.step_4)).setVisibility(View.INVISIBLE);
 
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContainer.getContext(),
-                        android.R.layout.simple_list_item_1, android.R.id.text1, new String[] {
-                        "Moe's Tavern",
-                        "המסעדה הגדולה",
-                        "Café 80's",
-                        "Ten Forward",
-                        "Monk's Café",
-                        "אימפריית השמש",
-                        "Central Perk",
-                        "Cheers"
-                });
-
-                mSummaryList.setAdapter(adapter);
+//                ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContainer.getContext(),
+//                        android.R.layout.simple_list_item_1, android.R.id.text1, new String[] {
+//                        "Moe's Tavern",
+//                        "המסעדה הגדולה",
+//                        "Café 80's",
+//                        "Ten Forward",
+//                        "Monk's Café",
+//                        "אימפריית השמש",
+//                        "Central Perk",
+//                        "Cheers"
+//                });
+//
+//                mSummaryList.setAdapter(adapter);
 
                 return;
             }
 
-            if (selectedMealOptionsIds.size() <= 1) {
-                ((RelativeLayout) rootView.findViewById(R.id.step_1)).startAnimation(stepFadeOut);
-                mChart.setVisibility(View.VISIBLE);
-                mChart.onResume();
-                ((RelativeLayout) rootView.findViewById(R.id.step_2)).startAnimation(stepFadeIn);
-                ((RelativeLayout) rootView.findViewById(R.id.step_3)).startAnimation(stepFadeOut);
-            }
+            ((RelativeLayout) rootView.findViewById(R.id.step_1)).setVisibility(View.INVISIBLE);
+            mChart.setVisibility(View.VISIBLE);
+            mChart.onResume();
+            ((RelativeLayout) rootView.findViewById(R.id.step_2)).setVisibility(View.VISIBLE);
+            ((RelativeLayout) rootView.findViewById(R.id.step_3)).setVisibility(View.INVISIBLE);
+            ((RelativeLayout) rootView.findViewById(R.id.step_4)).setVisibility(View.INVISIBLE);
 
             List<Float> slices = new ArrayList<Float>();
             final List<String> titles = new ArrayList<String>();

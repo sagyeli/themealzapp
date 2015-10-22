@@ -92,12 +92,31 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="invisible">
-        <ListView
-            android:id="@+id/summarylist"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="75dp">
-        </ListView>
+        <!--<ListView-->
+            <!--android:id="@+id/summarylist"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="75dp">-->
+        <!--</ListView>-->
+
+        <ImageView
+            android:id="@+id/restaurants_step"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/restaurants_step"/>
+    </RelativeLayout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/step_4"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible">
+
+        <ImageView
+            android:id="@+id/post_order_step"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/post_order_step"/>
     </RelativeLayout>
 
 </FrameLayout>
